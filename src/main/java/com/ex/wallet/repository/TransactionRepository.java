@@ -1,0 +1,9 @@
+package com.ex.wallet.repository;
+
+import com.ex.wallet.dbase.Transaction;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
+
+public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
+}
