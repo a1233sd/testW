@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "18464e86-87e2-4a33-9059-4dc0f51e0df1",
+		"name": "Wallet API Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "38970832"
+	},
+	"item": [
+		{
+			"name": "Get User By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/api/v1/users/{{userId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Alice\",\n    \"surname\": \"Smith\",\n    \"phoneNumber\": \"1234567890\"\n}"
+				},
+				"url": "http://localhost:8080/api/v1/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Wallet Balance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/api/v1/balance/{{walletId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Wallet (Deposit)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"walletId\": \"{{walletId}}\",\n    \"operationType\": \"DEPOSIT\",\n    \"amount\": 500.00\n}"
+				},
+				"url": "http://localhost:8080/api/v1/wallet"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Wallet (Withdraw)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"walletId\": \"{{walletId}}\",\n    \"operationType\": \"WITHDRAW\",\n    \"amount\": 200.00\n}"
+				},
+				"url": "http://localhost:8080/api/v1/wallet"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Wallet for Existing User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"{{userId}}\"\n}"
+				},
+				"url": "http://localhost:8080/api/v1/wallet/create"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transactions By Wallet",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/api/v1/transactions/{{walletId}}"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "walletId",
+			"value": ""
+		}
+	]
+}
