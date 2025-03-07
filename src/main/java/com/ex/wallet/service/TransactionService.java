@@ -8,6 +8,7 @@ import com.ex.wallet.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -18,9 +19,8 @@ public class TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
-    public Transaction getTransaction (UUID transactionId) throws TransactionNotFoundException {
-        return transactionRepository.findById(transactionId)
-                .orElseThrow(() -> new TransactionNotFoundException("Транзакция не найдена"));
+    public List<Transaction> getTransactionsByWallet(Wallet wallet) {
+        return transactionRepository.findAllByWallet(wallet);
     }
 
     // Поле createdDate будет установлено автоматически через @PrePersist

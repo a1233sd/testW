@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="VVM">
+
+        <createTable tableName="user">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="varchar(50)"/>
+        </createTable>
+
+
+        <createTable tableName="wallet">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="balance" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+
+        <addForeignKeyConstraint
+                constraintName="fk_wallet_user"
+                baseTableName="wallet"
+                baseColumnNames="user_id"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
+
+
+        <createTable tableName="transaction">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="operation_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="numeric(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="success" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wallet_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+
+        <addForeignKeyConstraint
+                constraintName="fk_transaction_wallet"
+                baseTableName="transaction"
+                baseColumnNames="wallet_id"
+                referencedTableName="wallet"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+    <include file="db.changelog-seed.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>

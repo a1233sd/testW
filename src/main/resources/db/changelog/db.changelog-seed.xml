@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="seed-1" author="VVM">
+
+        <preConditions onFail="MARK_RAN">
+            <dbms type="postgresql"/>
+        </preConditions>
+
+        <sql>CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</sql>
+        <insert tableName="user">
+            <column name="id" value="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"/>
+            <column name="name" value="Charlie"/>
+            <column name="surname" value="Brown"/>
+            <column name="phone_number" value="5551234567"/>
+        </insert>
+
+
+        <insert tableName="wallet">
+            <column name="id" value="bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"/>
+            <column name="balance" valueNumeric="2500.00"/>
+            <column name="user_id" value="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"/>
+        </insert>
+
+        <!-- Здесь для id используется функция uuid_generate_v4(), чтобы сгенерировать случайное значение -->
+        <insert tableName="transaction">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="operation_type" value="DEPOSIT"/>
+            <column name="amount" valueNumeric="2500.00"/>
+            <column name="success" valueBoolean="true"/>
+            <column name="description" value="Initial deposit"/>
+            <column name="created_date" valueDate="2022-01-01T00:00:00"/>
+            <column name="wallet_id" value="bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

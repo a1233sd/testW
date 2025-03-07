@@ -1,17 +1,17 @@
 package com.ex.wallet.service;
 
-
 import com.ex.wallet.dbase.OperationType;
 import com.ex.wallet.dbase.Transaction;
+import com.ex.wallet.dbase.User;
 import com.ex.wallet.dbase.Wallet;
 import com.ex.wallet.exception.InsufficientFundsException;
 import com.ex.wallet.exception.WalletNotFoundException;
 import com.ex.wallet.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.util.UUID;
+
 
 @Service
 public class WalletService {
@@ -23,10 +23,14 @@ public class WalletService {
         this.transactionService = transactionService;
     }
 
-
     public Wallet getWallet(UUID walletId) throws WalletNotFoundException {
         return walletRepository.findById(walletId)
                 .orElseThrow(() -> new WalletNotFoundException("Кошелек не найден"));
+    }
+    public BigDecimal getBalance(UUID walletId) throws WalletNotFoundException {
+        Wallet wallet = walletRepository.findById(walletId)
+                .orElseThrow(() -> new WalletNotFoundException("Кошелек не найден"));
+        return wallet.getBalance();
     }
     @Transactional
     public Wallet updateWallet(UUID walletId, OperationType operationType, BigDecimal amount) {
@@ -56,5 +60,14 @@ public class WalletService {
         wallet.getTransactions().add(transaction);
         walletRepository.save(wallet);
         return wallet;
+    }
+    @Transactional
+    public Wallet createWallet(User user) {
+        Wallet wallet = new Wallet();
+        wallet.setBalance(BigDecimal.valueOf(0.0));
+        wallet.setUser(user);
+        // Добавляем кошелек в список кошельков юзера
+        user.getWallets().add(wallet);
+        return walletRepository.save(wallet);
     }
 }
