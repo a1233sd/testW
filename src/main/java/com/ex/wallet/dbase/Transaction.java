@@ -1,5 +1,6 @@
 package com.ex.wallet.dbase;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class Transaction {
     @Column(name = "id")
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "operation_type")
     private OperationType operationType;
 
@@ -46,6 +48,7 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "wallet_id")
+    @JsonBackReference
     private Wallet wallet;
 
 }

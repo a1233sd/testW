@@ -1,5 +1,7 @@
 package com.ex.wallet.dbase;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @Table(name="wallet")
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"transactions"})
 public class Wallet {
 
     @Id
@@ -31,5 +34,6 @@ public class Wallet {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 }

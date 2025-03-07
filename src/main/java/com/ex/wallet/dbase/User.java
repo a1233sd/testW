@@ -1,6 +1,7 @@
 package com.ex.wallet.dbase;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name="user")
+@Table(name = "\"user\"")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -33,6 +34,7 @@ public class User {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Wallet> wallets = new ArrayList<>();
 
 }

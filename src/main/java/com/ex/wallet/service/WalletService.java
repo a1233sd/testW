@@ -32,19 +32,17 @@ public class WalletService {
                 .orElseThrow(() -> new WalletNotFoundException("Кошелек не найден"));
         return wallet.getBalance();
     }
-    @Transactional
+    @Transactional(noRollbackFor = InsufficientFundsException.class)
     public Wallet updateWallet(UUID walletId, OperationType operationType, BigDecimal amount) {
-        Wallet wallet = getWallet(walletId);
+        Wallet wallet = walletRepository.findByIdForUpdate(walletId);
 
         Transaction transaction = transactionService.createTransaction(wallet, operationType, amount);
 
         if (operationType == OperationType.DEPOSIT) {
-            // При пополнении добавляем сумму к балансу
             wallet.setBalance(wallet.getBalance().add(amount));
             transaction.setSuccess(true);
             transaction.setDescription("Пополнение выполнено успешно");
         } else if (operationType == OperationType.WITHDRAW) {
-            // При снятии проверяем, достаточно ли средств
             if (wallet.getBalance().compareTo(amount) < 0) {
                 transaction.setSuccess(false);
                 transaction.setDescription("Недостаточно средств");
